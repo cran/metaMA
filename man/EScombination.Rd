@@ -28,10 +28,9 @@ If the data are already stored as ExpressionSets objects (cf. Bioconductor proje
 While the invisible object resulting from this function contains 
 the values described previously, other quantities of interest are printed: 
 DE,IDD,Loss,IDR,IRR.
-All these quantities are defined in function \code{IDDIDR} and in (Marot et al., 2009) 
+All these quantities are defined in function \code{IDDIDR} and in (Marot et al., 2008) 
 }
-\references{
-Marot, G., Foulley, J.-L., Mayer, C.-D., Jaffrezic, F. Moderated effect size and p-value combinations for microarray meta-analyses. Submitted. }
+\references{ Marot, G., Foulley, J.-L., Mayer, C.-D., Jaffrezic, F. (2009) Moderated effect size and p-value combinations for microarray meta-analyses. Bioinformatics. 25 (20): 2692-2699. }
 \author{ Guillemette Marot }
 \examples{
 data(Singhdata)
@@ -39,7 +38,7 @@ data(Singhdata)
 res=EScombination(esets=Singhdata$esets,classes=Singhdata$classes)
 #Number of differentially expressed genes in the meta-analysis
 length(res$Meta)
-#To plot an histogram of raw p-values from the meta-analysis
+#To plot an histogram of raw p-values
 rawpval=2*(1-pnorm(abs(res$TestStatistic)))
 hist(rawpval,nclass=100)
 }

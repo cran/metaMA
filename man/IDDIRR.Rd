@@ -25,8 +25,7 @@ identified in any of the individual studies alone.}
   \item{IRR}{Integration-driven Revision Rate: percentage of genes
 that are declared DE in individual studies but not in meta-analysis.}
 }
-\references{
-Marot, G., Foulley, J.-L., Mayer, C.-D., Jaffrezic, F. Moderated effect size and p-value combinations for microarray meta-analyses. Submitted. }
+\references{  Marot, G., Foulley, J.-L., Mayer, C.-D., Jaffrezic, F. (2009) Moderated effect size and p-value combinations for microarray meta-analyses. Bioinformatics. 25 (20): 2692-2699. }
 \author{ Guillemette Marot }
 \examples{
 data(Singhdata)
