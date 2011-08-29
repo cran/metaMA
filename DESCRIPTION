@@ -1,8 +1,8 @@
 Package: metaMA
 Type: Package
 Title: Meta-analysis for MicroArrays
-Version: 1.2
-Date: 2011-08-03
+Version: 2.1
+Date: 2011-08-29
 Author: Guillemette Marot
 Maintainer: Guillemette Marot <guillemette.marot@inria.fr>
 Depends: R (>= 2.6), limma, SMVar
@@ -10,6 +10,6 @@ Description: Combines either p-values or modified effect sizes from
         different studies to find differentially expressed genes
 License: GPL
 LazyLoad: yes
-Packaged: 2011-08-03 08:14:11 UTC; Guillemette
+Packaged: 2012-10-29 08:59:10 UTC; ripley
 Repository: CRAN
-Date/Publication: 2011-08-03 11:42:04
+Date/Publication: 2012-10-29 08:59:11
