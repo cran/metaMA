@@ -20,7 +20,7 @@ Matrix with one row per gene, and in column:
   \item{vardprime}{ Variance of the unbiased effect size}
 }
 \references{ Marot, G., Foulley, J.-L., Mayer, C.-D., Jaffrezic, F. Moderated effect size combination for microarray meta-analyses and comparison study. Submitted. }
-\author{ Guillemette Marot }
+\author{ Guillemette Marot with contribution from Ankur Ravinarayana Chakravarthy}
 \examples{
 #for SMVar: 
 #stati$TestStat[order(stati$GeneId)],length(classes[[i]]),stati$DegOfFreedom[order(stati$GeneId)])

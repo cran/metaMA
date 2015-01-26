@@ -9,8 +9,8 @@ Combines either p-values or moderated effect sizes from different studies to fin
 \tabular{ll}{
 Package: \tab metaMA\cr
 Type: \tab Package\cr
-Version: \tab 2.1\cr
-Date: \tab 2011-08-29\cr
+Version: \tab 3.1.1\cr
+Date: \tab 2015-01-26\cr
 License: \tab GPL\cr
 LazyLoad: \tab yes\cr
 }
@@ -35,4 +35,8 @@ library(metaMA)
 data(Singhdata)
 EScombination(esets=Singhdata$esets,classes=Singhdata$classes)
 pvalcombination(esets=Singhdata$esets,classes=Singhdata$classes)
+#more details are provided in the vignette; only open it in interactive R sessions
+if(interactive()){
+  vignette("metaMA")
+  }
 }

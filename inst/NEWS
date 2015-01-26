@@ -1,0 +1,11 @@
+            
+                RELEASE HISTORY OF metaMA PACKAGE
+             ========================================
+
+		CHANGES in metaRNASeq VERSION 3.1.1
+
+- A vignette has been added to the package to better explain its usage (January, 23rd, 2014)
+- Changes have been performed to effectsize function to allow greater values of m: lgamma function is used instead of gamma, necessiting log and exp transform. 
+
+
+ 

@@ -1,0 +1,281 @@
+%\VignetteIndexEntry{metaMA Vignette}
+%\VignetteKeyword{metMA data}
+%\VignetteKeyword{differential analysis}
+%\VignettePackage{metaMA}
+\documentclass[12pt,utf8x]{article}
+
+\SweaveOpts{eps=FALSE,echo=TRUE,png=TRUE,pdf=FALSE,figs.only=TRUE}
+\usepackage{times}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[colorlinks=TRUE,urlcolor=blue,citecolor=blue]{hyperref}
+\usepackage{subfigure}
+\usepackage{amsmath}
+
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+\newcommand{\Rmethod}[1]{{\texttt{#1}}}
+\newcommand{\Rfunarg}[1]{{\texttt{#1}}}
+\newcommand{\Rclass}[1]{{\textit{#1}}}
+\newcommand{\Rcode}[1]{{\texttt{#1}}}
+\newcommand{\software}[1]{\textsf{#1}}
+\newcommand{\R}{\software{R}}
+
+
+\textwidth=6.2in
+\textheight=8.5in
+\oddsidemargin=0.2in
+\evensidemargin=0.2in
+\headheight=0in
+\headsep=0in
+
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+\title{Using metaMA for differential gene expression analysis from multiple studies}
+\author{Guillemette Marot and R{\'e}mi Bruy{\`e}re}
+\date{Modified: January 26, 2015.   Compiled: \today}
+\maketitle
+
+<<echo=FALSE>>=
+options(width=60)
+@ 
+
+\begin{abstract}
+This vignette illustrates the use of the \Rpackage{metaMA} package to combine data from multiple microarray experiments. Based on real publicly available data, it also explains the way to format them and draw conclusions thanks to annotation data.
+\end{abstract}
+
+\tableofcontents
+
+%--------------------------------------------------
+\section{Introduction}
+\label{sec:intro}
+%--------------------------------------------------
+Microarray experiments have been widely used to study differential gene expression between normal and tumoral tissues or other experimental conditions. Very often, the number of replicates is small due either to the cost of the experiment or the lack of biological replicates available. Meta-analyses have increased sensitivity by combining different studies but it is expected that even more sensitivity can be obtained using shrinkage approaches when the number of samples is small in each individual study. \Rpackage{metaMA} proposes a method to calculate moderated effect sizes or $p$-values from standard and moderated t-tests. The $p$-values are obtained from \Rpackage{limma}, \Rpackage{SMVar} or \Rpackage{t-test} procedures. \Rpackage{metaMA}'s methods can be applied on different datasets such as those found in public microarray databases.
+\\
+\Rcode{pvalcombination(esets, classes)} method combines $p$-values from different datasets (\Rcode{esets}) to extract differentially expressed genes between two conditions (e.g. healthy, ill) coded by $0$ or $1$ for each biological sample in (\Rcode{classes}). \Rcode{esets} a is list of matrices which contains genes expression, with one matrix for each study. Sections \ref{sec:data} and \ref{sec:conv} concern its building. \Rcode{classes} is a list of vectors. Each vector codes by 0 samples in the first condition, and by 1 samples in the second condition. Section \ref{sec:clas} gives an example. 
+ 
+%--------------------------------------------------
+\section{Download public data with GEOquery}
+\label{sec:data}
+%--------------------------------------------------
+ 
+\Rpackage{metaMA} requires normalized micro-array data. In this section, \Rpackage{GEOquery} \cite{GEOquery} is used to get some public data from head and neck cancers.
+ 
+<<loadparameters>>=  
+library(GEOquery)
+@
+<<loaddata>>=
+data1 = getGEO('GSE9844')
+data2 = getGEO('GSE3524')
+data3 = getGEO('GSE13601')
+@
+{\bf Note:} \emph{Before using GEOquery on a Linux machine, make sure XML and Curl are up-to-date. Use the following command before starting R :} \texttt{sudo apt-get install r-base-core libxml2-dev libcurl4-openssl-dev curl}
+\\
+\Rpackage{GEOquery} gives \Rcode{ExpressionSet} which might be already normalized. Boxplots show their distributions.
+<<boxplot,fig=TRUE>>=
+par(mfrow=c(2,2))
+boxplot(data.frame(exprs(data1[[1]])),main="data1",outline=FALSE)
+boxplot(data.frame(exprs(data2[[1]])),main="data2",outline=FALSE)
+boxplot(data.frame(exprs(data3[[1]])),main="data3",outline=FALSE)
+@
+\\
+While data1 and data2 look like normalized data, data3 presents large ranges of values, which might not be normalized. Since the present vignette does not aim at discussing the choice of the normalization method, we simply log2-transform raw intensities values. The reader is however invited to take special care of normalization on his own data and if possible, to use the same normalization strategy for each study. 
+%but warn the reader  don't look like similar between arrays. There are different ways to normalize datasets. For this example, we force distributions to be identical between all AFFYMETRIX arrays by using the \Rcode{normalize.ExpressionSet.quantiles} method of the package \Rpackage{affyPLM} \cite{affyPLM1} \cite{affyPLM2} \cite{affyPLM3}. Depending on the context, other normalizations might be more appropriated.
+
+<<normalizedata,fig=TRUE>>=
+exprs(data3[[1]])<-log2(exprs(data3[[1]]))
+boxplot(data.frame(exprs(data3[[1]])),main="data3",outline=FALSE)
+@
+%--------------------------------------------------
+\section{Conditions}
+\label{sec:clas}
+%--------------------------------------------------
+metaMA compares genes expressions between 2 conditions (e.g. healthy vs ill). This step explains how to build the \Rcode{classes} list to determine which replicate is in each condition (here tumor is coded by 1, control by 0).
+<<classes>>=
+c1=as.numeric(pData(data1[[1]])["source_name_ch1"]==
+                "Oral Tongue Squamous Cell Carcinoma")
+c2=as.numeric(apply(pData(data2[[1]])["description"],
+                    1,toupper)=="SERIES OF 16 TUMORS")
+c3=as.numeric(pData(data3[[1]])["source_name_ch1"]=="Tumor")
+classes=list(c1,c2,c3)
+@
+In public data, like in our example, information about diseases can be found in \Rcode{pData}.
+\\
+Otherwise, theses classes can be built manually. For example, with 2 arbitrary studies :
+<<classesman,eval=FALSE>>=
+c1=c(1,0,1,1,0,1,0,0,0,1)
+c2=c(1,1,1,0,0,0)
+classes2=list(c1,c2)
+@
+\section{Convert esets to an Unigene format}
+\label{sec:conv}
+The probes of these 3 datasets are not the sames, but they have genes in common. The following functions link probes \Rcode{Entrez Gene ID} and UNIGENE identifiers to intersect all common genes. The function \Rcode{probe2unigene} returns all UNIGENE identifiers from probes available in microarrays. The function \Rcode{unigene2probe} gives the correspondance back from a UNIGENE to \Rcode{Entrez Gene ID}. To run this example, it is necessary to load the Bioconductor package \Rpackage{org.Hs.eg.db}. If not installed, the following commands can be used to install it:
+
+<<install bioconductor package,eval=FALSE>>=
+source("http://bioconductor.org/biocLite.R")
+biocLite("org.Hs.eg.db")
+@
+
+<<Human Gene database>>=
+require("org.Hs.eg.db")
+x <- org.Hs.egUNIGENE
+mapped_genes <- mappedkeys(x)
+link <- as.list(x[mapped_genes])
+@
+
+<<map probes id with unigenes>>=
+probe2unigene<-function(expset)
+{
+  #construction of the map probe->unigene
+  probes=rownames(exprs(expset))
+  gene_id=fData(expset)[probes,"ENTREZ_GENE_ID"]
+  unigene=link[gene_id]
+  names(unigene)<-probes
+  probe_unigene=unigene
+}
+@
+<<permutation unigene->probe>>=
+unigene2probe<-function(map)
+{
+  suppressWarnings(x <- cbind(unlist(map), names(map)))
+  unigene_probe=split(x[,2], x[,1]) 
+}
+@
+Note that probes which can not be linked to a \Rcode{UNIGENE} identifier will not be taken into account in the meta-analysis. Because one unigene corresponds to many probes, it is necessary to choose a strategy to merge such probes from a single study. In the following, \Rcode{convert2metaMA} chooses to summarize values of probes corresponding to the same UNIGENE by their mean, as attested by the default value given to the argument \Rcode{mergemeth}.
+
+<<totalconversion>>=
+convert2metaMA<-function(listStudies,mergemeth=mean)
+{
+  if (!(class(listStudies) %in% c("list"))) {
+    stop("listStudies must be a list")
+  } 
+  conv_unigene=lapply(listStudies, 
+                      FUN=function(x) unigene2probe(probe2unigene(x)))
+  id=lapply(conv_unigene,names)
+  
+  inter=Reduce(intersect,id)
+  if(length(inter)<=0){stop("no common genes")}
+  print(paste(length(inter),"genes in common"))
+  esets=lapply(1:length(listStudies),FUN=function(i){
+    l=lapply(conv_unigene[[i]][inter],
+             FUN=function(x) exprs(listStudies[[i]])[x,,drop=TRUE])
+    esetsgr=t(sapply(l,FUN=function(ll) if(is.null(dim(ll))){ll}
+                     else{apply(ll,2,mergemeth)}))
+    esetsgr
+  })
+  return(list(esets=esets,conv.unigene=conv_unigene))
+}
+conv=convert2metaMA(list(data1[[1]],data2[[1]],data3[[1]]))
+esets=conv$esets
+conv_unigene=conv$conv.unigene
+@
+
+<<nb,echo=FALSE,eval=TRUE>>=
+nb=length(rownames(esets[[1]]))
+@
+
+The function \Rcode{convert2metaMA} builds matrices for each study containing only rows corresponding to the  identifiers common to all studies (based on the conversion via UNIGENE). These matrices are stored in the sublist \Rcode{esets} of the value returned by the function. In this example, the intersection of the 3 studies includes \Sexpr{nb} genes. \Rcode{convert2metaMA} also returns \Rcode{conv.unigene} to be able to go back to original probe names after meta-analysis.
+
+%--------------------------------------------------
+\section{metaMA Application} \label{sec:app}
+%--------------------------------------------------
+<<metama>>=
+library(metaMA)
+res=pvalcombination(esets=esets,classes=classes)
+length(res$Meta)
+Hs.Meta=rownames(esets[[1]])[res$Meta]
+@
+<<IDDIRR,eval=TRUE,echo=FALSE>>=
+x=IDDIRR(res$Meta,res$AllIndStudies)
+@
+The $p$-value combination gives different indicators to evaluate the performance of the meta-analysis. DE corresponds to the number of differentially expressed genes. IDD (Integration Driven discoveries) returns the number of genes that are declared DE in the meta-analysis that were not identified in any of the individual studies alone, Loss the number of genes that are identified DE in individual studies but not in meta-analysis. The Integration-driven Discovery Rate (IDR) and Integration-driven Revision Rate (IRR) are the corresponding proportions of IDD and Loss. 
+In this example, meta-analysis gives $\Sexpr{x[["IDD"]]}$ ($\Sexpr{x[["IDR"]]}\%$) new genes and $\Sexpr{x[["Loss"]]}$ ($\Sexpr{x[["IRR"]]}\%$), are sidetracked. \Rcode{Hs.Meta} stores the \Rcode{UNIGENE} identifiers of the genes declared differentially expressed by the meta-analysis. 
+
+%--------------------------------------------------
+\section{Venn Diagram} \label{sec:diag}
+%--------------------------------------------------
+To compare visually the number of differentially expressed genes in individual studies or in meta-analysis, it is possible to draw a Venn diagram, for example with the \Rpackage{VennDiagram} package.
+<<venndiagram,results=hide,echo=TRUE,eval=TRUE>>=
+library(VennDiagram)
+venn.plot<-venn.diagram(x = list(study1=res$study1,
+                                 study2=res$study2,
+                                 study3=res$study3,
+                                 meta=res$Meta),
+             filename = NULL, col = "black",
+             fill = c("blue", "red", "purple","green"),
+             margin=0.05, alpha = 0.6)
+jpeg("venn_jpeg.jpg")
+grid.draw(venn.plot)
+dev.off()
+@
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width = .70\textwidth]{venn_jpeg.jpg}
+\caption{Venn Diagram comparing the list of DE genes at a 5\% BH thereshold obtained by each individual study and the meta-analysis}
+\end{center}
+\end{figure}
+$\Sexpr{x[["DE"]]}$ differentially expressed genes are found by \Rpackage{metaMA}. When comparing this result with differentially expressed genes found in each study, it seems that study3 explains an important part of them.
+
+%--------------------------------------------------
+\section{Annotations} \label{sec:ann}
+%--------------------------------------------------
+
+To obtain annotations related to initial probes, it is necessary to know the chip types used in each study. It is preferable to know them in advance (to save time) but it is also possible to get it with the following \Rcode{getanndb} function.
+
+<<annotationdb>>=
+getanndb<-function(expset)
+{
+  gpl_name=annotation(expset)
+  gpl=getGEO(gpl_name)
+  title=Meta(gpl)$title
+  db=paste(gsub("[-|_]","",
+                tolower(strsplit(title,"[[]|[]]")
+                        [[1]][[2]])),"db",sep=".")
+  return(db)
+}
+db1=getanndb(data1[[1]])
+db1
+db2=getanndb(data2[[1]])
+db2
+db3=getanndb(data3[[1]])
+db3
+@
+
+It is then necessary to download annotation packages corresponding to these chip types.
+<<getannotationpackages,results=hide,echo=TRUE, eval=TRUE>>=
+source("http://bioconductor.org/biocLite.R")
+biocLite(db1)
+biocLite(db2)
+biocLite(db3)
+library(db1,character.only=TRUE)
+library(db2,character.only=TRUE)
+library(db3,character.only=TRUE)
+@
+
+In the following code, \Rcode{origId.Meta} gives back for each study the original ids corresponding to the common \Rcode{Hs.Meta} ids of the differentially expressed genes in the meta-analysis. Since several original probes matched the same UNIGENE identifiers, there might be many more ids in \Rcode{origId.Meta} than in \Rcode{Hs.Meta}.
+Then, functions \Rcode{aafTableAnn} and \Rcode{saveHTML} from the package \Rcode{annaffy} are used to save in the current directory an HTML file "annotation.html", which provides biological information about identified probes.
+
+<<getannotation,results=hide,echo=TRUE, eval=TRUE>>=
+origId.Meta=lapply(conv_unigene, 
+                   FUN=function(vec) as.vector(unlist(vec[Hs.Meta])))
+library(annaffy)
+annlist=lapply(1:length(origId.Meta), 
+               FUN=function(i) aafTableAnn(origId.Meta[[i]],chip=get(paste0("db",i)),colnames=aaf.handler()))  
+annot=do.call(rbind,annlist)
+saveHTML(annot,file="annotation.html",title="Responder genes")
+@
+
+%--------------------------------------------------
+\section{Session Info}
+%--------------------------------------------------
+<<sessionInfo>>=
+sessionInfo()
+@ 
+
+\bibliographystyle{abbrv}    		% Style BST file
+\bibliography{metaMA}
+
+\end{document}

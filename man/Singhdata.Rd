@@ -12,7 +12,7 @@ List of 3 elements:
  \item{ geneNames }{Factor with 12625 levels corresponding to gene names}
 }
 }
-\source{ These data are available on the website \url{http : //www.bioinf.ucd.ie/people/ian/}. We considered 50 normal samples and 50 tumoral samples, leaving out the 2 last tumoral samples.
+\source{ These data are available on the website \url{http://www.bioinf.ucd.ie/people/ian/}. We considered 50 normal samples and 50 tumoral samples, leaving out the 2 last tumoral samples.
 Data are already normalized. }
 \references{Singh, D., Febbo, P. G., Ross, K., Jackson, D. G., Manola, J., Ladd, C., Tamayo, P.,
 Renshaw, A. A., D'Amico, A. V., Richie, J. P., Lander, E. S., Loda, M., Kantoff,

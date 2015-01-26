@@ -26,7 +26,7 @@ pvalcombination.paired(logratios, moderated = c("limma", "SMVar", "t")[1], BHth 
 While the invisible object resulting from this function contains 
 the values described previously, other quantities of interest are printed: 
 DE,IDD,Loss,IDR,IRR.
-All these quantities are defined in function \code{IDDIDR} and in (Marot et al., 2008) 
+All these quantities are defined in function \code{IDDIDR} and in (Marot et al., 2009) 
 }
 \references{  Marot, G., Foulley, J.-L., Mayer, C.-D., Jaffrezic, F. (2009) Moderated effect size and p-value combinations for microarray meta-analyses. Bioinformatics. 25 (20): 2692-2699. }
 \author{ Guillemette Marot }

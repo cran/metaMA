@@ -1,11 +1,14 @@
-# Default NAMESPACE created by R
-# Remove the previous line if you edit this file
-
-# Export all names
-exportPattern(".")
-
-# Import all packages listed as Imports or Depends
-import(
-  limma,
-  SMVar
-)
+export(calcfit2Diffrep)
+export(directEScombi)
+export(directpvalcombi)
+export(effectsize)
+export(EScombination.paired)
+export(EScombination)
+export(IDDIRR)
+export(pvalcombination.paired)
+export(pvalcombination)
+export(row.ttest.stat)
+export(row.ttest.statp)
+export(rowVars)
+import(SMVar)
+import(limma)

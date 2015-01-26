@@ -1,0 +1,17 @@
+citHeader("To cite the R package 'metaMA' in publications use:")  
+
+citEntry(entry   = "Article",
+         title   = "Moderated effect size and P-value combinations for microarray meta-analyses",
+         year    = "2009",
+	       journal = "Bioinformatics",
+         author  = personList(
+           person(given="Guillemette", family="Marot"),
+           person(given="Jean-Louis", family="Foulley"),
+           person(given="Claus-Dieter", family="Mayer"),
+           person(given="Florence", family="Jaffrezic")),
+          volume = "25",
+          number = "20",
+          pages= "2692--2699",
+         textVersion = "G. Marot, J.-L. Foulley, C.-D. Mayer and F. Jaffrezic (2009) Moderated effect size and P-value combinations for microarray meta-analyses. Bioinformatics 25 (20): 2692-2699." )
+
+
