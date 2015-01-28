@@ -9,8 +9,8 @@ Combines either p-values or moderated effect sizes from different studies to fin
 \tabular{ll}{
 Package: \tab metaMA\cr
 Type: \tab Package\cr
-Version: \tab 3.1.1\cr
-Date: \tab 2015-01-26\cr
+Version: \tab 3.1.2\cr
+Date: \tab 2015-01-28\cr
 License: \tab GPL\cr
 LazyLoad: \tab yes\cr
 }

@@ -1,4 +1,4 @@
-25a26cf6d978c9d8bdacdf5097f18ebb *DESCRIPTION
+91660d307ea51de3b1e44544ef3896b4 *DESCRIPTION
 c74bd60f131bb9b4f1ce7f5775d010a6 *NAMESPACE
 e6900a7024236cea40373908014cd282 *R/EScombination.R
 81a0e9da155e13a948faaf978dcab862 *R/EScombination.paired.R
@@ -16,10 +16,10 @@ c6f027239508c13659d10c20a47d184e *build/vignette.rds
 0840c18c1b1ee3f2dfbe08afef18cd63 *data/Singhdata.rda
 87d678485cd4f06cb0797a3723836113 *data/datalist
 cc3e9d564a75b8b585ac6c783c847dca *inst/CITATION
-a053fdab896f581ab51f38b45f77d3b7 *inst/NEWS
-d6a506750565daa33ed8e1d88a6c8490 *inst/doc/metaMA.R
-a837995ffcf0f279af0c4bb20867ecb5 *inst/doc/metaMA.Rnw
-4e0c55e9c582a06b34d8a9331f52f335 *inst/doc/metaMA.pdf
+fc1c051955d38d11f7cdfe4333c546ac *inst/NEWS
+45441908721adbbff9e11cc5ae85e0c5 *inst/doc/metaMA.R
+68a16081ea7c763eca149da30182159e *inst/doc/metaMA.Rnw
+7c1917d6cc5a2135db7012240103bcdf *inst/doc/metaMA.pdf
 abd3c345a6760e114a2eae3cc35eb5f8 *man/EScombination.Rd
 7605e2ad091125fae6ff995d99359c0c *man/EScombination.paired.Rd
 de44f110ee92994e82e9f4f0d56a8a9c *man/IDDIRR.Rd
@@ -28,11 +28,11 @@ de44f110ee92994e82e9f4f0d56a8a9c *man/IDDIRR.Rd
 bd225530282ec509dcabc321cf50c4c6 *man/directEScombi.Rd
 56941043dfb2032bc3aa95dcc345f771 *man/directpvalcombi.Rd
 95d8baba5b9946c2d0ba340864734712 *man/effectsize.Rd
-f0807d338e97c2e36eb05d2f5c448d3a *man/metaMA-package.Rd
+d2571e4fa9ce1b285b3113fc89ef99ee *man/metaMA-package.Rd
 b2d338e29b8aba8450e0db8c7ce6578d *man/pvalcombination.Rd
 dba107173c029cfab937b7c450ae9cf0 *man/pvalcombination.paired.Rd
 71fcab14cd0f7cfc776224282e279b42 *man/row.ttest.stat.Rd
 cfb09836dff3aa57e0d290cec638c34e *man/row.ttest.statp.Rd
 25a6fa102ff73d8456e56f0c6dd8f6d4 *man/rowVars.Rd
-a837995ffcf0f279af0c4bb20867ecb5 *vignettes/metaMA.Rnw
+68a16081ea7c763eca149da30182159e *vignettes/metaMA.Rnw
 3627b90184cf086177f1de1c7080ed4a *vignettes/metaMA.bib

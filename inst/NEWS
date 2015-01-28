@@ -8,4 +8,6 @@
 - Changes have been performed to effectsize function to allow greater values of m: lgamma function is used instead of gamma, necessiting log and exp transform. 
 
 
- 
+   	CHANGES in metaRNASeq VERSION 3.1.2
+
+- Commands of the vignette are not anymore evaluated because of problems with some platforms (January, 28th, 2014).
