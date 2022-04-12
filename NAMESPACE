@@ -1,3 +1,4 @@
+importFrom("stats", "model.matrix", "p.adjust", "pnorm", "pt", "qnorm")
 export(calcfit2Diffrep)
 export(directEScombi)
 export(directpvalcombi)

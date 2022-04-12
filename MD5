@@ -1,5 +1,5 @@
-91660d307ea51de3b1e44544ef3896b4 *DESCRIPTION
-c74bd60f131bb9b4f1ce7f5775d010a6 *NAMESPACE
+ee0be1a921411613379fe152aa24936d *DESCRIPTION
+4174de389777f632d72a76a6ff876c06 *NAMESPACE
 e6900a7024236cea40373908014cd282 *R/EScombination.R
 81a0e9da155e13a948faaf978dcab862 *R/EScombination.paired.R
 d4f41782ffa7426279ef05efc6cfb406 *R/IDDIRR.R
@@ -12,14 +12,14 @@ e81850b26aa1103b5bffda0f1970a441 *R/pvalcombination.paired.R
 c64b1a038075501d989613cbe03c39f2 *R/row.ttest.stat.R
 9bc85bbd23a095ede49c016e229d7949 *R/row.ttest.statp.R
 be4f19708d9f61a4f07b7bb5d1d98f25 *R/rowVars.R
-c6f027239508c13659d10c20a47d184e *build/vignette.rds
-0840c18c1b1ee3f2dfbe08afef18cd63 *data/Singhdata.rda
+00ed83e65402c6adc5ef175739c062c5 *build/vignette.rds
+86c4bc569400c50deb94abbb61796b75 *data/Singhdata.rda
 87d678485cd4f06cb0797a3723836113 *data/datalist
 cc3e9d564a75b8b585ac6c783c847dca *inst/CITATION
 fc1c051955d38d11f7cdfe4333c546ac *inst/NEWS
 45441908721adbbff9e11cc5ae85e0c5 *inst/doc/metaMA.R
 68a16081ea7c763eca149da30182159e *inst/doc/metaMA.Rnw
-7c1917d6cc5a2135db7012240103bcdf *inst/doc/metaMA.pdf
+714eb6831d8a4349e747266741e96aa2 *inst/doc/metaMA.pdf
 abd3c345a6760e114a2eae3cc35eb5f8 *man/EScombination.Rd
 7605e2ad091125fae6ff995d99359c0c *man/EScombination.paired.Rd
 de44f110ee92994e82e9f4f0d56a8a9c *man/IDDIRR.Rd
